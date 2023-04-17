@@ -3,6 +3,8 @@ package handlers
 import (
 	"github.com/andey-robins/bookshop-go/db"
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
+	"log"
 )
 
 type Customer struct {
@@ -13,8 +15,33 @@ type Customer struct {
 }
 
 func CreateCustomer(c *gin.Context) {
+	jsonRaw := make(map[string]interface{})
+
+	if err := c.ShouldBindBodyWith(&jsonRaw, binding.JSON); err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := ValidateJsonLength(jsonRaw, 2); err != nil {
+		log.Println("In POST customers/new, " + err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := ValidateNonEmptyString("Name", jsonRaw["Name"]); err != nil {
+		log.Println("In POST customers/new, " + err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := ValidateNonEmptyString("ShippingAddr", jsonRaw["ShippingAddr"]); err != nil {
+		log.Println("In POST customers/new, " + err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
 	var json Customer
-	if err := c.BindJSON(&json); err != nil {
+	if err := c.ShouldBindBodyWith(&json, binding.JSON); err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
@@ -29,8 +56,33 @@ func CreateCustomer(c *gin.Context) {
 }
 
 func UpdateCustomerAddress(c *gin.Context) {
+	jsonRaw := make(map[string]interface{})
+
+	if err := c.ShouldBindBodyWith(&jsonRaw, binding.JSON); err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := ValidateJsonLength(jsonRaw, 2); err != nil {
+		log.Println("In PUT customers/updateAddress, " + err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := ValidateNonEmptyString("ShippingAddr", jsonRaw["ShippingAddr"]); err != nil {
+		log.Println("In PUT customers/updateAddress, " + err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := ValidatePositiveNumber("Id", jsonRaw["Id"]); err != nil {
+		log.Println("In PUT customers/updateAddress, " + err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
 	var json Customer
-	if err := c.BindJSON(&json); err != nil {
+	if err := c.ShouldBindBodyWith(&json, binding.JSON); err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
@@ -45,8 +97,27 @@ func UpdateCustomerAddress(c *gin.Context) {
 }
 
 func GetCustomerBalance(c *gin.Context) {
+	jsonRaw := make(map[string]interface{})
+
+	if err := c.ShouldBindBodyWith(&jsonRaw, binding.JSON); err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := ValidateJsonLength(jsonRaw, 1); err != nil {
+		log.Println("In GET customers/balance, " + err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := ValidatePositiveNumber("Id", jsonRaw["Id"]); err != nil {
+		log.Println("In GET customers/balance, " + err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
 	var json Customer
-	if err := c.BindJSON(&json); err != nil {
+	if err := c.ShouldBindBodyWith(&json, binding.JSON); err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}

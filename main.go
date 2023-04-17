@@ -3,9 +3,18 @@ package main
 import (
 	"github.com/andey-robins/bookshop-go/handlers"
 	"github.com/gin-gonic/gin"
+	"log"
+	"os"
 )
 
 func main() {
+	file, err := os.OpenFile("logging.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
+    if err != nil {
+        log.Fatal(err)
+    }
+
+	log.SetOutput(file)
+
 	router := gin.Default()
 
 	router.POST("/books/new", handlers.CreateBook)

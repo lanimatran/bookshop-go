@@ -3,6 +3,8 @@ package handlers
 import (
 	"github.com/andey-robins/bookshop-go/db"
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
+	"log"
 )
 
 type Book struct {
@@ -13,11 +15,45 @@ type Book struct {
 }
 
 func CreateBook(c *gin.Context) {
-	var json Book
-	if err := c.BindJSON(&json); err != nil {
+	jsonRaw := make(map[string]interface{})
+
+	if err := c.ShouldBindBodyWith(&jsonRaw, binding.JSON); err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
+
+	if err := ValidateJsonLength(jsonRaw, 3); err != nil {
+		log.Println("In POST books/new, " + err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := ValidateNonEmptyString("Title", jsonRaw["Title"]); err != nil {
+		log.Println("In POST books/new, " + err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := ValidateNonEmptyString("Author", jsonRaw["Author"]); err != nil {
+		log.Println("In POST books/new, " + err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := ValidatePositiveNumber("Price", jsonRaw["Price"]); err != nil {
+		log.Println("In POST books/new, " + err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	var json Book
+
+	if err := c.ShouldBindBodyWith(&json, binding.JSON); err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+
 
 	_, err := db.CreateBook(json.Title, json.Author, json.Price)
 	if err != nil {
@@ -29,8 +65,33 @@ func CreateBook(c *gin.Context) {
 }
 
 func GetPrice(c *gin.Context) {
+	jsonRaw := make(map[string]interface{})
+
+	if err := c.ShouldBindBodyWith(&jsonRaw, binding.JSON); err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := ValidateJsonLength(jsonRaw, 2); err != nil {
+		log.Println("In GET books/price, " + err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := ValidateNonEmptyString("Title", jsonRaw["Title"]); err != nil {
+		log.Println("In GET books/price, " + err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := ValidateNonEmptyString("Author", jsonRaw["Author"]); err != nil {
+		log.Println("In GET books/price, " + err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
 	var json Book
-	if err := c.BindJSON(&json); err != nil {
+	if err := c.ShouldBindBodyWith(&json, binding.JSON); err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}

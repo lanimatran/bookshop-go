@@ -1,0 +1,11 @@
+2023/04/17 00:55:45 In POST books/new, Expected 3 argument
+2023/04/17 00:56:12 In POST books/new, Expected non-empty string for argument Author
+2023/04/17 00:56:19 In POST books/new, Expected positive number for argument Price
+2023/04/17 00:56:35 In GET books/price, Expected 2 argument
+2023/04/17 00:57:00 In GET books/price, Expected non-empty string for argument Title
+2023/04/17 00:58:24 In POST customers/new, Expected 2 argument
+2023/04/17 01:04:29 In PUT customers/updateAddress, Expected positive number for argument Id
+2023/04/17 01:04:39 In PUT customers/updateAddress, Expected positive number for argument Id
+2023/04/17 01:04:41 In PUT customers/updateAddress, Expected positive number for argument Id
+2023/04/17 01:05:41 In GET customers/balance, Expected 1 argument
+2023/04/17 01:10:39 In POST orders/new, Expected 2 argument

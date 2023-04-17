@@ -6,6 +6,8 @@ import (
 
 	"github.com/andey-robins/bookshop-go/db"
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
+	"log"
 )
 
 type Order struct {
@@ -15,8 +17,33 @@ type Order struct {
 }
 
 func CreateOrder(c *gin.Context) {
+	jsonRaw := make(map[string]interface{})
+
+	if err := c.ShouldBindBodyWith(&jsonRaw, binding.JSON); err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := ValidateJsonLength(jsonRaw, 2); err != nil {
+		log.Println("In POST orders/new, " + err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := ValidatePositiveNumber("BookId", jsonRaw["BookId"]); err != nil {
+		log.Println("In POST orders/new, " + err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := ValidatePositiveNumber("CustomerId", jsonRaw["CustomerId"]); err != nil {
+		log.Println("In POST orders/new, " + err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
 	var json Order
-	if err := c.BindJSON(&json); err != nil {
+	if err := c.ShouldBindBodyWith(&json, binding.JSON); err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
@@ -31,8 +58,33 @@ func CreateOrder(c *gin.Context) {
 }
 
 func GetShipmentStatus(c *gin.Context) {
+	jsonRaw := make(map[string]interface{})
+
+	if err := c.ShouldBindBodyWith(&jsonRaw, binding.JSON); err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := ValidateJsonLength(jsonRaw, 2); err != nil {
+		log.Println("In GET orders/shipped, " + err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := ValidatePositiveNumber("BookId", jsonRaw["BookId"]); err != nil {
+		log.Println("In GET orders/shipped, " + err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := ValidatePositiveNumber("CustomerId", jsonRaw["CustomerId"]); err != nil {
+		log.Println("In GET orders/shipped, " + err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
 	var json Order
-	if err := c.BindJSON(&json); err != nil {
+	if err := c.ShouldBindBodyWith(&json, binding.JSON); err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
@@ -53,8 +105,33 @@ func GetShipmentStatus(c *gin.Context) {
 }
 
 func ShipOrder(c *gin.Context) {
+	jsonRaw := make(map[string]interface{})
+
+	if err := c.ShouldBindBodyWith(&jsonRaw, binding.JSON); err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := ValidateJsonLength(jsonRaw, 2); err != nil {
+		log.Println("In PUT orders/ship, " + err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := ValidatePositiveNumber("BookId", jsonRaw["BookId"]); err != nil {
+		log.Println("In PUT orders/ship, " + err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := ValidatePositiveNumber("CustomerId", jsonRaw["CustomerId"]); err != nil {
+		log.Println("In PUT orders/ship, " + err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
 	var json Order
-	if err := c.BindJSON(&json); err != nil {
+	if err := c.ShouldBindBodyWith(&json, binding.JSON); err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
@@ -75,8 +152,33 @@ func ShipOrder(c *gin.Context) {
 }
 
 func GetOrderStatus(c *gin.Context) {
+	jsonRaw := make(map[string]interface{})
+
+	if err := c.ShouldBindBodyWith(&jsonRaw, binding.JSON); err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := ValidateJsonLength(jsonRaw, 2); err != nil {
+		log.Println("In GET orders/status, " + err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := ValidatePositiveNumber("BookId", jsonRaw["BookId"]); err != nil {
+		log.Println("In GET orders/status, " + err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := ValidatePositiveNumber("CustomerId", jsonRaw["CustomerId"]); err != nil {
+		log.Println("In GET orders/status, " + err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
 	var json Order
-	if err := c.BindJSON(&json); err != nil {
+	if err := c.ShouldBindBodyWith(&json, binding.JSON); err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
